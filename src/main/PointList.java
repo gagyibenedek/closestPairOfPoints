@@ -56,20 +56,21 @@ public class PointList {
 			} else if (point.getCoordinate(coord) > this.right){
 				this.right = point.getCoordinate(coord);
 			}
-			
+
 			if(dimensionValue == null){
 				dimensionValue = point.getCoordinate(dominantCoord);
 			} else if(!FloatComparator.equals(dimensionValue, point.getCoordinate(dominantCoord))){
 				sameDimension = false;
 			}
 		}
-		
+
 		if(sameDimension && fullList.size() > 1){
 			dominantCoord++;
 			setBoundaries(dominantCoord);
 		}
 	}
 
+	//Divide et impera solution
 	public PointPair getClosestPointPair(){
 		PointPair result = null;
 		if(fullList != null && fullList.size() != 0){
@@ -120,6 +121,25 @@ public class PointList {
 		}
 
 		return result;
+	}
+
+	//Brute force solution
+	public PointPair getClosestPointPairBruteForce(){
+		PointPair min = null;
+		for(Point a : fullList){
+			for(Point b : fullList){
+				if(min == null && a != b){
+					min = new PointPair(a, b);
+				} else {
+					PointPair pair = new PointPair(a, b);
+					if(a != b && pair.getDistance() < min.getDistance()){
+						min = pair;
+					}
+				}
+			}
+		}
+
+		return min;
 	}
 
 	public void add(Point p){
